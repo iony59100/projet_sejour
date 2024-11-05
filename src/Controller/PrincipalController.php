@@ -15,4 +15,18 @@ class PrincipalController extends AbstractController
             'controller_name' => 'PrincipalController',
         ]);
     }
+    #[Route('/infirmier', name: 'infirmier')]
+    public function index2(): Response
+    {
+        return $this->render('infirmier/infirmier.html.twig', [
+            'controller_name' => 'PrincipalController',
+        ]);
+    }
+    #[Route('/admin', name: 'admin')]
+    public function index3(): Response
+    {
+        return $this->render('admin/admin.html.twig', [
+            'controller_name' => 'PrincipalController',
+        ]);
+    }
 }

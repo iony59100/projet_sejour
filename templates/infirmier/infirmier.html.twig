@@ -10,12 +10,10 @@
 
 <div class="example-wrapper">
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-Connecté en tant que {{ app.user.username }} en tant que admin
+Connecté en tant que {{ app.user.username }} en tant que infirmier
 {% else %}
 <a href="{{ path('login') }}"> Login </a>
 {% endif %}
-<a href="{{ path('infirmier') }}" class="btn btn-primary">Infirmier</a>
-<a href="{{ path('admin') }}" class="btn btn-primary">Admin</a>
 
 </div>
 {% endblock %}

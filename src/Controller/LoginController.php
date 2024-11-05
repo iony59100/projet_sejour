@@ -12,6 +12,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
      public function index(AuthenticationUtils $authenticationUtils): Response
       {
+         $user = $this->getUser();
          $error = $authenticationUtils->getLastAuthenticationError();
          $lastUsername = $authenticationUtils->getLastUsername();
           return $this->render('login/index.html.twig', [
