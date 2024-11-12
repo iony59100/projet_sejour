@@ -1,0 +1,19 @@
+{# templates/infirmier/arrivee.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Arrivée Patient{% endblock %}
+
+{% block body %}
+    <h1>Arrivée d'un patient</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Enregistrer le début de séjour</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}
