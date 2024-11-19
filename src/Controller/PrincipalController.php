@@ -18,6 +18,17 @@ class PrincipalController extends AbstractController
     #[Route('/principal', name: 'app_principal')]
     public function index(): Response
     {
+        $user = $this->getUser();
+
+        if ($user) {
+            if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                return $this->redirectToRoute('sejour_liste');
+            }
+
+            if (in_array('ROLE_INF', $user->getRoles())) {
+                return $this->redirectToRoute('arrivee_patient');
+            }
+        }
         return $this->render('principal/index.html.twig', [
             'controller_name' => 'PrincipalController',
         ]);
@@ -66,7 +77,7 @@ public function creersejour(Request $request, EntityManagerInterface $em): Respo
     #[Route('/modifier/{id}', name: 'modifiersejour')]
 public function modifiersejour(int $id, Request $request, EntityManagerInterface $em): Response
 {
-    // Récupérer le séjour à modifier
+    
     $sejour = $em->getRepository(Sejour::class)->find($id);
 
     if (!$sejour) {
@@ -169,7 +180,7 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
 
    
     $form = $this->createFormBuilder($sejour)
-        ->add('commentaire', TextareaType::class, [
+        ->add('commentaire', TextType::class, [
             'required' => false,
             'label' => 'Commentaire',
             'attr' => [
@@ -195,7 +206,7 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
         return $this->redirectToRoute('liste_sejours_actuels');
     }
 
-    return $this->render('infirmier/sortie_patient.html.twig', [
+    return $this->render('infirmier/sortie.html.twig', [
         'sejour' => $sejour,
         'form' => $form->createView(),
     ]);
