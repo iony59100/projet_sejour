@@ -16,6 +16,15 @@ class SejourRepository extends ServiceEntityRepository
         parent::__construct($registry, Sejour::class);
     }
 
+
+    public function findByDateArrivee(\DateTime $date): array
+{
+    return $this->createQueryBuilder('s')
+        ->where('s.dateArrivee = :date')
+        ->setParameter('date', $date->format('Y-m-d'))
+        ->getQuery()
+        ->getResult();
+}
     //    /**
     //     * @return Sejour[] Returns an array of Sejour objects
     //     */

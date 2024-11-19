@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Sejour;
 use App\Form\SejourType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,30 +30,28 @@ class PrincipalController extends AbstractController
         ]);
     }
     #[Route('/creer', name: 'creersejour')]
-     
-    public function creersejour(Request $request, EntityManagerInterface $em): Response
-    {
-        $sejour = new Sejour();
-        $sejour->setDateArrivee(new \DateTime());
+public function creersejour(Request $request, EntityManagerInterface $em): Response
+{
+    $sejour = new Sejour();
+    $sejour->setDateArrivee(new \DateTime());
+    $sejour->setEtat(0);
 
-        $form = $this->createForm(SejourType::class, $sejour);
-        $form->handleRequest($request);
+    $form = $this->createForm(SejourType::class, $sejour);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $lit = $sejour->getLit();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->persist($sejour);
+        $em->flush();
 
-
-            $em->persist($sejour);
-            $em->flush();
-
-            $this->addFlash('success', 'Le début de séjour a été enregistré avec succès');
-            return $this->redirectToRoute('admin');
-        }
-
-        return $this->render('admin/admin.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $this->addFlash('success', 'Le début de séjour a été enregistré avec succès');
+        return $this->redirectToRoute('admin');
     }
+
+    return $this->render('admin/admin.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
 
     #[Route('/sejours', name: 'sejour_liste')]
     public function sejourListe(EntityManagerInterface $em): Response
@@ -93,7 +93,8 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
      
     public function arriverpatient(EntityManagerInterface $em): Response
     {
-        $sejours = $em->getRepository(Sejour::class)->findAll();
+        $today = new \DateTime();
+        $sejours = $em->getRepository(Sejour::class)->findByDateArrivee($today);
 
         return $this->render('infirmier/arrivee.html.twig', [
             'sejours' => $sejours,
@@ -101,15 +102,50 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
     }
 
 
-    #[Route('/informationsejour', name: 'informationsejour')]
-    public function informationsejour(int $id, Request $request, EntityManagerInterface $em): Response
-    {
-        
     
-        return $this->render('admin/modifiersejour.html.twig', [
-            'form' => $form->createView(),
-        ]);
+    #[Route('/informationsejour/{id}', name: 'informationsejour')]
+    public function informationsejour(int $id, Request $request, EntityManagerInterface $em): Response
+
+    {
+    $sejour = $em->getRepository(Sejour::class)->find($id);
+
+    if (!$sejour) {
+        throw $this->createNotFoundException('Séjour non trouvé');
     }
+
+    $form = $this->createFormBuilder($sejour)
+    ->add('commentaire', TextType::class, [
+        'required' => false,
+        'label' => 'Commentaire',
+        'attr' => [
+            'class' => 'form-control',
+            'readonly' => true // le champ devient en lecture seule
+        ]
+    ])
+    ->add('etat', SubmitType::class, [
+        'label' => 'Valider l\'arrivée',
+        'attr' => ['class' => 'btn btn-success']
+    ])
+    ->getForm();
+
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+       
+        $sejour->setEtat(true);
+        $em->flush();
+
+        $this->addFlash('success', 'L\'arrivée du patient a été validée.');
+
+        return $this->redirectToRoute('arrivee_patient');
+    }
+
+    return $this->render('infirmier/informationsejour.html.twig', [
+        'sejour' => $sejour,
+        'form' => $form->createView(),
+    ]);
+}
 
     #[Route('/sortie_patient', name:'sortie_patient')]
     public function sortiepatient(ManagerRegistry $doctrine):Response

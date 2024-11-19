@@ -10,6 +10,7 @@
             <tr>
                 <th>ID</th>
                 <th>Date d'arrivée</th>
+                <th>Date de sortie</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -18,9 +19,9 @@
                 <tr>
                     <td>{{ sejour.id }}</td>
                     <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
+                    <td>{{ sejour.dateSortie|date('d/m/Y') }}</td>
                     <td>
                         <a href="{{ path('modifiersejour', {'id': sejour.id}) }}" class="btn btn-warning">Modifier</a>
-                    </td>
                 </tr>
             {% else %}
                 <tr>
