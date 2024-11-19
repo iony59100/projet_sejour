@@ -33,13 +33,7 @@ class PrincipalController extends AbstractController
             'controller_name' => 'PrincipalController',
         ]);
     }
-    #[Route('/infirmier', name: 'infirmier')]
-    public function index2(): Response
-    {
-        return $this->render('infirmier/infirmier.html.twig', [
-            'controller_name' => 'PrincipalController',
-        ]);
-    }
+
     #[Route('/creer', name: 'creersejour')]
 public function creersejour(Request $request, EntityManagerInterface $em): Response
 {
@@ -55,7 +49,7 @@ public function creersejour(Request $request, EntityManagerInterface $em): Respo
         $em->flush();
 
         $this->addFlash('success', 'Le début de séjour a été enregistré avec succès');
-        return $this->redirectToRoute('admin');
+        return $this->redirectToRoute('creersejour');
     }
 
     return $this->render('admin/admin.html.twig', [
@@ -107,6 +101,8 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         $today = new \DateTime();
         $sejours = $em->getRepository(Sejour::class)->findByDateArrivee($today);
 
+        
+
         return $this->render('infirmier/arrivee.html.twig', [
             'sejours' => $sejours,
         ]);
@@ -130,7 +126,7 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         'label' => 'Commentaire',
         'attr' => [
             'class' => 'form-control',
-            'readonly' => true // le champ devient en lecture seule
+           
         ]
     ])
     ->add('etat', SubmitType::class, [
@@ -147,7 +143,8 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         $sejour->setEtat(true);
         $em->flush();
 
-        $this->addFlash('L\'arrivée du patient a été validée.');
+        $this->addFlash('success', 'L\'arrivée du patient a été validée.');
+
 
         return $this->redirectToRoute('arrivee_patient');
     }

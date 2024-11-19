@@ -19,9 +19,6 @@
                 <ul class="navbar-nav">
                     {% if is_granted('ROLE_INF') %}
                     <li class="nav-item">
-                        <a href="{{ path('infirmier') }}" class="btn btn-primary">Infirmier</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{{ path('arrivee_patient') }}" class="btn btn-primary">Arrivée Patient</a>
                     </li>
                     <li class="nav-item">

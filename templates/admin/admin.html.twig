@@ -1,0 +1,19 @@
+{# templates/admin/admin.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un sejour{% endblock %}
+
+{% block body %}
+    <h1>Créer un séjour</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Créer un séjour</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}

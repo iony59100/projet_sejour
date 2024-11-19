@@ -16,6 +16,7 @@
         </thead>
         <tbody>
             {% for sejour in sejours %}
+             {% if sejour.etat != 1 %}
                 <tr>
                     <td>{{ sejour.id }}</td>
                     <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
@@ -26,8 +27,9 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3">Aucun séjour trouvé</td>
+                    
                 </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
