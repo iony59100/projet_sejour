@@ -136,7 +136,7 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         $sejour->setEtat(true);
         $em->flush();
 
-        $this->addFlash('success', 'L\'arrivée du patient a été validée.');
+        $this->addFlash('L\'arrivée du patient a été validée.');
 
         return $this->redirectToRoute('arrivee_patient');
     }
@@ -147,13 +147,59 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
     ]);
 }
 
-    #[Route('/sortie_patient', name:'sortie_patient')]
-    public function sortiepatient(ManagerRegistry $doctrine):Response
-    {
-        $repository = $doctrine->getRepository(Sejour::class);
-        
-        return $this->render('infirmier/sortie.html.twig');
+#[Route('/sortiepatients', name: 'liste_sejours_actuels')]
+public function listeSejoursActuels(EntityManagerInterface $em): Response
+{
+
+    $sejours = $em->getRepository(Sejour::class)->findBy(['etat' => false]);
+
+    return $this->render('infirmier/arrivee.html.twig', [
+        'sejours' => $sejours,
+    ]);
+}
+
+#[Route('/sortiepatient/{id}', name: 'sortie_patient')]
+public function sortiePatient(int $id, Request $request, EntityManagerInterface $em): Response
+{
+    $sejour = $em->getRepository(Sejour::class)->find($id);
+
+    if (!$sejour) {
+        throw $this->createNotFoundException('Séjour non trouvé');
     }
+
+   
+    $form = $this->createFormBuilder($sejour)
+        ->add('commentaire', TextareaType::class, [
+            'required' => false,
+            'label' => 'Commentaire',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('etat', SubmitType::class, [
+            'label' => 'Valider la sortie',
+            'attr' => ['class' => 'btn btn-danger'],
+        ])
+        ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+
+        $sejour->setEtat(true);
+        $em->flush();
+
+
+        $this->addFlash('La sortie du patient a été validée.');
+
+        return $this->redirectToRoute('liste_sejours_actuels');
+    }
+
+    return $this->render('infirmier/sortie_patient.html.twig', [
+        'sejour' => $sejour,
+        'form' => $form->createView(),
+    ]);
+}
 
 
 
