@@ -21,7 +21,7 @@
                     <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
                     <td>{{ sejour.dateSortie|date('d/m/Y') }}</td>
                     <td>
-                        <a href="{{ path('modifiersejour', {'id': sejour.id}) }}" class="btn btn-warning">Modifier</a>
+                        <a href="{{ path('sortie_patient', {'id': sejour.id}) }}" class="btn btn-warning">Modifier</a>
                 </tr>
             {% else %}
                 <tr>

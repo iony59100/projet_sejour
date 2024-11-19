@@ -8,31 +8,7 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<!-- Barre de navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Gestion des Patients</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('infirmier') }}">Acceuil</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('arrivee_patient') }}">Arrivée Patient</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('liste_sejours_actuels') }}">Sortie Patient</a>
-            </li>
-        </ul>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <span class="navbar-text">Connecté en tant que {{ app.user.username }} (Infirmier)</span>
-        {% else %}
-            <a href="{{ path('login') }}" class="btn btn-primary">Login</a>
-        {% endif %}
-    </div>
-</nav>
+
 
 <!-- Contenu principal -->
 <div class="example-wrapper">

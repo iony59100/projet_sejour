@@ -4,6 +4,32 @@
 {% block title %}Sortie Patient{% endblock %}
 
 {% block body %}
-    <h1>Sortie Patient</h1>
-    <button id="sortie">Valider</button>
+    <h1>Liste des Séjours</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date d'arrivée</th>
+                <th>Patients</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sejour in sejours %}
+                <tr>
+                    <td>{{ sejour.id }}</td>
+                    <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
+                    <td>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</td>
+                    <td>
+                        <a href="{{ path('informationsejour', {'id': sejour.id}) }}" class="btn btn-warning">Sortie</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun séjour trouvé</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

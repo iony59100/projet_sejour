@@ -153,7 +153,7 @@ public function listeSejoursActuels(EntityManagerInterface $em): Response
 
     $sejours = $em->getRepository(Sejour::class)->findBy(['etat' => false]);
 
-    return $this->render('infirmier/arrivee.html.twig', [
+    return $this->render('infirmier/sortie.html.twig', [
         'sejours' => $sejours,
     ]);
 }
