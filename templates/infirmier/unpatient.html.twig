@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Information Séjour{% endblock %}
+
+{% block body %}
+    <h1>Informations du Séjour</h1>
+
+    <p><strong>Patient : </strong>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</p>
+    <p><strong>Date d'arrivée : </strong>{{ sejour.dateArrivee|date('d/m/Y') }}</p>
+
+    {# Affichage du formulaire pour ajouter un commentaire #}
+    {{ form_start(form) }}
+        {{ form_row(form.commentaire) }}
+        {{ form_row(form.etat) }}
+    {{ form_end(form) }}
+{% endblock %}

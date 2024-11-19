@@ -1,35 +1,39 @@
-{# templates/infirmier/sortie.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Sortie Patient{% endblock %}
+{% block title %}Liste des séjours validés{% endblock %}
 
 {% block body %}
-    <h1>Liste des Séjours</h1>
+    <h1>Liste des séjours validés</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Date d'arrivée</th>
-                <th>Patients</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sejour in sejours %}
+
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ sejour.id }}</td>
-                    <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
-                    <td>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</td>
-                    <td>
-                        <a href="{{ path('liste_sejours_actuels', {'id': sejour.id}) }}" class="btn btn-warning">Sortie</a>
-                    </td>
+                    <th>Nom du patient</th>
+                    <th>Date d'entrée</th>
+                    <th>Date de sortie prévue</th>
+                    <th>Actions</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">Aucun séjour trouvé</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for sejours in sejour %}
+                    <tr>
+                        <td>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</td>
+                        <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
+                        <td>{{ sejour.dateSortie|date('d/m/Y') }}</td>
+                        <td>
+                            {% if sejour.etat == 1 %}
+                                <span class="badge badge-success">Sortie validée</span>
+                            {% else %}
+                                <span class="badge badge-warning">En cours</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('sortie_patient', {'id': sejour.id}) }}" class="btn btn-danger">Valider la sortie</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
 {% endblock %}
