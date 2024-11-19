@@ -17,13 +17,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('arrivee_patient') }}">Arrivée Patient</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ path('infirmier') }}">Acceuil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('admin') }}">Admin</a>
+                <a class="nav-link" href="{{ path('arrivee_patient') }}">Arrivée Patient</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('sortie_patient') }}">Sortie Patient</a>
             </li>
         </ul>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}

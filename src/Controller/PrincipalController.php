@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Sejour;
 use App\Form\SejourType;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PrincipalController extends AbstractController
 {
@@ -26,9 +27,9 @@ class PrincipalController extends AbstractController
             'controller_name' => 'PrincipalController',
         ]);
     }
-    #[Route('/arrivee-patient', name: 'arrivee_patient')]
+    #[Route('/creer', name: 'creersejour')]
      
-    public function arriveePatient(Request $request, EntityManagerInterface $em): Response
+    public function creersejour(Request $request, EntityManagerInterface $em): Response
     {
         $sejour = new Sejour();
         $sejour->setDateArrivee(new \DateTime());
@@ -37,28 +38,87 @@ class PrincipalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer le lit associé au séjour et changer son état
             $lit = $sejour->getLit();
-            $lit->setEtat('occupé');
 
-            // Persister les modifications
+
             $em->persist($sejour);
             $em->flush();
 
-            $this->addFlash('success', 'Le début de séjour a été enregistré avec succès et le lit est maintenant occupé.');
-            return $this->redirectToRoute('arrivee_patient');
+            $this->addFlash('success', 'Le début de séjour a été enregistré avec succès');
+            return $this->redirectToRoute('admin');
         }
 
-        return $this->render('infirmier/arrivee.html.twig', [
+        return $this->render('admin/admin.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/admin', name: 'admin')]
-    public function index3(): Response
+    #[Route('/sejours', name: 'sejour_liste')]
+    public function sejourListe(EntityManagerInterface $em): Response
     {
-        return $this->render('admin/admin.html.twig', [
-            'controller_name' => 'PrincipalController',
+        $sejours = $em->getRepository(Sejour::class)->findAll();
+
+        return $this->render('admin/sejour_liste.html.twig', [
+            'sejours' => $sejours,
         ]);
     }
+
+    #[Route('/modifier/{id}', name: 'modifiersejour')]
+public function modifiersejour(int $id, Request $request, EntityManagerInterface $em): Response
+{
+    // Récupérer le séjour à modifier
+    $sejour = $em->getRepository(Sejour::class)->find($id);
+
+    if (!$sejour) {
+        throw $this->createNotFoundException('Séjour non trouvé');
+    }
+
+    $form = $this->createForm(SejourType::class, $sejour);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->persist($sejour);
+        $em->flush();
+
+        $this->addFlash('success', 'Le séjour a été modifié avec succès');
+        return $this->redirectToRoute('sejour_liste');
+    }
+
+    return $this->render('admin/modifiersejour.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+    #[Route('/arrivee_patient', name: 'arrivee_patient')]
+     
+    public function arriverpatient(EntityManagerInterface $em): Response
+    {
+        $sejours = $em->getRepository(Sejour::class)->findAll();
+
+        return $this->render('infirmier/arrivee.html.twig', [
+            'sejours' => $sejours,
+        ]);
+    }
+
+
+    #[Route('/informationsejour', name: 'informationsejour')]
+    public function informationsejour(int $id, Request $request, EntityManagerInterface $em): Response
+    {
+        
+    
+        return $this->render('admin/modifiersejour.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/sortie_patient', name:'sortie_patient')]
+    public function sortiepatient(ManagerRegistry $doctrine):Response
+    {
+        $repository = $doctrine->getRepository(Sejour::class);
+        
+        return $this->render('infirmier/sortie.html.twig');
+    }
+
+
+
 }

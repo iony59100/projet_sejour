@@ -29,6 +29,9 @@ class Sejour
     #[ORM\ManyToOne(inversedBy: 'sejours')]
     private ?Lit $lit = null;
 
+    #[ORM\Column]
+    private ?bool $etat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +100,18 @@ class Sejour
     public function setLit(?Lit $lit): static
     {
         $this->lit = $lit;
+
+        return $this;
+    }
+
+    public function isEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): static
+    {
+        $this->etat = $etat;
 
         return $this;
     }
