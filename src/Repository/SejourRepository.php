@@ -27,6 +27,19 @@ class SejourRepository extends ServiceEntityRepository
 }
 
 
+
+public function findByDateArriveeAvantOuA(\DateTime $date)
+{
+    
+    return $this->createQueryBuilder('s')
+        ->where('s.dateArrivee <= :date')
+        ->setParameter('date', $date)
+        ->getQuery()
+        ->getResult();
+}
+
+
+
 public function findByDateAfterArrivee(\DateTime $date)
 {
     return $this->createQueryBuilder('s')
