@@ -30,10 +30,11 @@ class SejourRepository extends ServiceEntityRepository
 public function findByDateAfterArrivee(\DateTime $date)
 {
     return $this->createQueryBuilder('s')
-        ->andWhere('s.date_arrivee > :date')
+        ->andWhere('s.dateArrivee > :date')
         ->setParameter(':date', $date->format('Y-m-d'))
-        ->orderBy('s.date_arrivee', 'ASC')
-        ->getQuery();
+        ->orderBy('s.dateArrivee', 'ASC')
+        ->getQuery()
+        ->getResult();
 }
 
     //    /**
