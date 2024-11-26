@@ -104,26 +104,16 @@ throw new \Exception('Don\'t forget to activate logout in security.yaml');
     #[Route('/creerpatient', name: 'creerpatient')]
 public function creerPatient(Request $request, EntityManagerInterface $em): Response
 {
-    // Create a new Patient entity
     $patient = new Patient();
-
-    // Create the form for the Patient entity (assuming you have a PatientType form)
     $form = $this->createForm(PatientType::class, $patient);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Persist the new patient to the database
         $em->persist($patient);
         $em->flush();
-
-        // Flash a success message
         $this->addFlash('success', 'Le patient a été créé avec succès');
-
-        // Redirect to the patient list page after successful creation
         return $this->redirectToRoute('gererpatient');
     }
-
-    // Render the form for creating the patient
     return $this->render('admin/creerpatient.html.twig', [
         'form' => $form->createView(),
     ]);
