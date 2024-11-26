@@ -201,7 +201,7 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
         $this->addFlash('success', 'La sortie du patient a été validée.');
 
 
-        return $this->redirectToRoute('sortiepatients');
+        return $this->redirectToRoute('liste_sejours_actuels');
     }
 
     return $this->render('infirmier/unpatient.html.twig', [

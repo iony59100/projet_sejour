@@ -16,20 +16,20 @@
                 </tr>
             </thead>
             <tbody>
-                {% for sejours in sejour %}
+                {% for sejours in sejours %}
                     <tr>
-                        <td>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</td>
-                        <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
-                        <td>{{ sejour.dateSortie|date('d/m/Y') }}</td>
+                        <td>{{ sejours.patient.nom }} {{ sejours.patient.prenom }}</td>
+                        <td>{{ sejours.dateArrivee|date('d/m/Y') }}</td>
+                        <td>{{ sejours.dateSortie|date('d/m/Y') }}</td>
                         <td>
-                            {% if sejour.etat == 1 %}
+                            {% if sejours.etat == 1 %}
                                 <span class="badge badge-success">Sortie validée</span>
                             {% else %}
                                 <span class="badge badge-warning">En cours</span>
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{ path('sortie_patient', {'id': sejour.id}) }}" class="btn btn-danger">Valider la sortie</a>
+                            <a href="{{ path('sortie_patient', {'id': sejours.id}) }}" class="btn btn-danger">Valider la sortie</a>
                         </td>
                     </tr>
                 {% endfor %}
