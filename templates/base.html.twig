@@ -19,6 +19,9 @@
                 <ul class="navbar-nav">
                     {% if is_granted('ROLE_INF') %}
                     <li class="nav-item">
+                        <a href="{{ path('sejour_date') }}" class="btn btn-primary">Consulter les séjours à une date donnée.</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ path('arrivee_patient') }}" class="btn btn-primary">Arrivée Patient</a>
                     </li>
                     <li class="nav-item">

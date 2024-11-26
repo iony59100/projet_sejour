@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Sejour;
 use App\Form\SejourType;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class PrincipalController extends AbstractController
 {
@@ -108,7 +109,37 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         ]);
     }
 
+    #[Route('/sejour_date', name: 'sejour_date')]
+    public function sejourdate(Request $request, EntityManagerInterface $em): Response
+    {
+       
+        $date = new \DateTime();
+    
+        $form = $this->createFormBuilder()
+            ->add('date', DateType::class, [
+                'widget' => 'single_text',
+                'data' => $date,
+                'label' => 'Sélectionner une date'
+            ])
+            ->getForm();
+    
+       
+        $form->handleRequest($request);
+    
+      
+        if ($form->isSubmitted() && $form->isValid()) {
+            $date = $form->getData()['date'];
+        }
+    
+        $sejours = $em->getRepository(Sejour::class)->findByDateArrivee($date);
+    
 
+        return $this->render('infirmier/sejourdate.html.twig', [
+            'sejours' => $sejours,
+            'form' => $form->createView(), 
+        ]);
+    }
+    
     
     #[Route('/informationsejour/{id}', name: 'informationsejour')]
     public function informationsejour(int $id, Request $request, EntityManagerInterface $em): Response
