@@ -34,6 +34,12 @@ class PrincipalController extends AbstractController
             'controller_name' => 'PrincipalController',
         ]);
     }
+    #[Route('/logout', name:'app_logout')]
+public function logout(): void
+{
+// controller can be blank: it will never be called!
+throw new \Exception('Don\'t forget to activate logout in security.yaml');
+}
 
     #[Route('/creer', name: 'creersejour')]
 public function creersejour(Request $request, EntityManagerInterface $em): Response
@@ -50,7 +56,7 @@ public function creersejour(Request $request, EntityManagerInterface $em): Respo
         $em->flush();
 
         $this->addFlash('success', 'Le début de séjour a été enregistré avec succès');
-        return $this->redirectToRoute('creersejour');
+        return $this->redirectToRoute('sejour_liste');
     }
 
     return $this->render('admin/admin.html.twig', [
@@ -226,7 +232,7 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
 
     if ($form->isSubmitted() && $form->isValid()) {
        
-        $sejour->setEtat(true);
+        $sejour->setEtat(false);
         $em->flush();
 
         $this->addFlash('success', 'La sortie du patient a été validée.');
