@@ -210,6 +210,7 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         ]);
     }
     
+
     
     #[Route('/informationsejour/{id}', name: 'informationsejour')]
     public function informationsejour(int $id, Request $request, EntityManagerInterface $em): Response
@@ -255,6 +256,25 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
         'form' => $form->createView(),
     ]);
 }
+
+#[Route('/informationsejourdate/{id}', name: 'informationsejourdate')]
+public function informationsejourdate(int $id, Request $request, EntityManagerInterface $em): Response
+{
+    
+    $sejour = $em->getRepository(Sejour::class)->find($id);
+
+   
+    if (!$sejour) {
+        throw $this->createNotFoundException('Séjour non trouvé');
+    }
+
+   
+    return $this->render('infirmier/sejourdateinfo.html.twig', [
+        'sejour' => $sejour,
+    ]);
+}
+
+
 
 #[Route('/sortiepatients', name: 'liste_sejours_actuels')]
 public function listeSejoursActuels(EntityManagerInterface $em): Response
