@@ -160,7 +160,7 @@ public function listeSejoursActuels(EntityManagerInterface $em): Response
 {
     $sejours = $em->getRepository(Sejour::class)->findBy(['etat' => 1]);
 
-        // Passer la liste des séjours au template
+
         return $this->render('infirmier/sortie.html.twig', [
             'sejours' => $sejours,
         ]);
@@ -195,7 +195,7 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
 
     if ($form->isSubmitted() && $form->isValid()) {
        
-        $sejour->setEtat(true);
+        $sejour->setEtat(false);
         $em->flush();
 
         $this->addFlash('success', 'La sortie du patient a été validée.');
@@ -209,7 +209,17 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
         'form' => $form->createView(),
     ]);
 
-
-
 }
+
+    #[Route(path:'/prochainsejour', name:'prochain_sejour')]
+    public function prochainsejour(EntityManagerInterface $em): Response
+    {
+        $today = new \DateTime();
+        $sejours = $em->getRepository(Sejour::class)->findByDateAfterArrivee($today);
+
+        return $this->render('infirmier/prochain_sejour.html.twig', [
+            'sejours' => $sejours,
+        ]);
+    }
+
 }
