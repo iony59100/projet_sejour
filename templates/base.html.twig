@@ -32,13 +32,14 @@
                         <a href="{{ path('creersejour') }}" class="btn btn-primary">Créer un séjour</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ path('sejour_liste') }}" class="btn btn-primary">Modifier un séjour</a>
+                        <a href="{{ path('sejour_liste') }}" class="btn btn-primary">Gérer les séjours</a>
                     </li>
                     {% endif %}
                 </ul>
                 <span class="navbar-text ms-auto">
                     {% if app.user %}
                         connecté en tant que {{ app.user.username }} ({{ app.user.roles|join(', ') }})
+                        <a href="{{ path('app_logout') }}" class="btn btn-primary">Déconnexion</a>
                     {% else %}
                         Vous n'êtes pas connecté.
                     {% endif %}
