@@ -4,7 +4,15 @@
 
 {% block body %}
     <h1>Liste des Séjours</h1>
-    
+
+ 
+    <form method="post">
+        {{ form_start(form) }}
+        {{ form_row(form.date) }}
+        <button type="submit" class="btn btn-primary">Valider</button>
+        {{ form_end(form) }}
+    </form>
+
     <table class="table">
         <thead>
             <tr>
@@ -26,9 +34,7 @@
                     </td>
                 </tr>
             {% else %}
-                <tr>
-                    
-                </tr>
+           
             {% endif %}
             {% endfor %}
         </tbody>
