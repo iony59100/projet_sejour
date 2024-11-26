@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des prochains séjours{% endblock %}
+
+{% block body %}
+    <h1>Liste des prochains séjours</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date d'arrivée</th>
+                <th>Patients</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sejour in sejours %}
+             {% if sejour.etat != 1 %}
+                <tr>
+                    <td>{{ sejour.id }}</td>
+                    <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
+                    <td>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</td>
+                    <td>
+                        <a href="{{ path('informationsejour', {'id': sejour.id}) }}" class="btn btn-warning">Informations</a>
+                    </td>
+                </tr>
+                
+            {% else %}
+                <tr>
+                    
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
