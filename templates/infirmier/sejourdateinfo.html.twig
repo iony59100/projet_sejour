@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Information Séjour{% endblock %}
+
+{% block body %}
+    <h1>Informations du Séjour</h1>
+
+    <p><strong>Patient : </strong>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</p>
+    <p><strong>Date d'arrivée : </strong>{{ sejour.dateArrivee|date('d/m/Y') }}</p>
+    <p><strong>État : </strong>{{ sejour.etat ? 'Validé' : 'Non validé' }}</p>
+    <p><strong>Commentaire : </strong>{{ sejour.commentaire ? sejour.commentaire : 'Aucun commentaire' }}</p>
+
+    <a href="{{ path('arrivee_patient') }}" class="btn btn-warning">Retour</a>
+{% endblock %}

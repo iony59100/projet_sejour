@@ -19,6 +19,9 @@
                 <ul class="navbar-nav">
                     {% if is_granted('ROLE_INF') %}
                     <li class="nav-item">
+                        <a href="{{ path('sejour_date') }}" class="btn btn-primary">Consulter les séjours à une date donnée.</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ path('arrivee_patient') }}" class="btn btn-primary">Arrivée Patient</a>
                     </li>
                     <li class="nav-item">
@@ -32,13 +35,17 @@
                         <a href="{{ path('creersejour') }}" class="btn btn-primary">Créer un séjour</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ path('sejour_liste') }}" class="btn btn-primary">Modifier un séjour</a>
+                        <a href="{{ path('sejour_liste') }}" class="btn btn-primary">Gérer les séjours</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('gererpatient') }}" class="btn btn-primary">Gérer les patients</a>
                     </li>
                     {% endif %}
                 </ul>
                 <span class="navbar-text ms-auto">
                     {% if app.user %}
                         connecté en tant que {{ app.user.username }} ({{ app.user.roles|join(', ') }})
+                        <a href="{{ path('app_logout') }}" class="btn btn-primary">Déconnexion</a>
                     {% else %}
                         Vous n'êtes pas connecté.
                     {% endif %}

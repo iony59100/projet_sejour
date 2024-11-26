@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Séjours{% endblock %}
+
+{% block body %}
+    <h1>Liste des Séjours</h1>
+    <a href="{{ path('creerpatient') }}" class="btn btn-success mb-3">Créer un Nouveau Patient</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Adresse</th>
+                <th>Téléphone</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.id }}</td>
+                    <td>{{ patient.nom }}</td>
+                    <td>{{ patient.prenom }}</td>
+                    <td>{{ patient.adresse }}</td>
+                    <td>{{ patient.tel }}</td>
+                    <td>
+                        <a href="{{ path('modifierpatient', {'id': patient.id}) }}" class="btn btn-warning">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucun patient trouvé</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

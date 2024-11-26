@@ -11,6 +11,8 @@
                 <th>ID</th>
                 <th>Date d'arrivée</th>
                 <th>Date de sortie</th>
+                <th>Patient</th>
+                <th>Lit</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -19,13 +21,22 @@
                 <tr>
                     <td>{{ sejour.id }}</td>
                     <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
-                    <td>{{ sejour.dateSortie|date('d/m/Y') }}</td>
+                    <td>
+                        {% if sejour.dateSortie is not null %}
+                            {{ sejour.dateSortie|date('d/m/Y') }}
+                        {% else %}
+                            Pas encore sortie
+                        {% endif %}
+                    </td>
+                    <td>{{ sejour.patient.nom }}</td>
+                    <td>{{ sejour.lit.id }}</td>
                     <td>
                         <a href="{{ path('modifiersejour', {'id': sejour.id}) }}" class="btn btn-warning">Modifier</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3">Aucun séjour trouvé</td>
+                    <td colspan="6">Aucun séjour trouvé</td>
                 </tr>
             {% endfor %}
         </tbody>

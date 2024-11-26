@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Nouveau Patient{% endblock %}
+
+{% block body %}
+    <h1>Créer un Nouveau Patient</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prenom) }}
+        {{ form_row(form.adresse) }}
+        {{ form_row(form.tel) }}
+
+        <button class="btn btn-primary">Créer le Patient</button>
+    {{ form_end(form) }}
+
+    <br>
+    <a href="{{ path('gererpatient') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}

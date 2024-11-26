@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Séjours{% endblock %}
+
+{% block body %}
+    <h1>Liste des Séjours</h1>
+
+    <form method="post">
+        {{ form_start(form) }}
+        {{ form_row(form.date) }}
+        <button type="submit" class="btn btn-primary">Valider</button>
+        {{ form_end(form) }}
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date d'arrivée</th>
+                <th>Patients</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sejour in sejours %}
+                {% if sejour.etat != 1 %}
+                    <tr>
+                        <td>{{ sejour.id }}</td>
+                        <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
+                        <td>{{ sejour.patient.nom }} {{ sejour.patient.prenom }}</td>
+                        <td>
+                            <a href="{{ path('informationsejourdate', {'id': sejour.id}) }}" class="btn btn-warning">Informations</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    {# Vous pouvez laisser ce bloc vide ou ajouter des actions pour les séjours validés #}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
