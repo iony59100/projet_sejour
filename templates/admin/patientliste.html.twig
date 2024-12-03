@@ -14,6 +14,7 @@
                 <th>Adresse</th>
                 <th>Téléphone</th>
                 <th>Action</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@
                     <td>{{ patient.tel }}</td>
                     <td>
                         <a href="{{ path('modifierpatient', {'id': patient.id}) }}" class="btn btn-warning">Modifier</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('creersejourpatient', {'id': patient.id}) }}" class="btn btn-warning">Créer un séjour</a>
                     </td>
                 </tr>
             {% else %}

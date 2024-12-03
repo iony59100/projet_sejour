@@ -12,6 +12,7 @@
                 <th>Date d'arrivée</th>
                 <th>Date de sortie</th>
                 <th>Patient</th>
+                <th>Commentaire </th>
                 <th>Lit</th>
                 <th>Action</th>
                 
@@ -30,6 +31,7 @@
                         {% endif %}
                     </td>
                     <td>{{ sejour.patient.nom }}</td>
+                    <td>{{sejour.commentaire}}</td>
                     <td>{{ sejour.lit.id }}</td>
                     <td>
                         <a href="{{ path('modifiersejour', {'id': sejour.id}) }}" class="btn btn-warning">Modifier</a>

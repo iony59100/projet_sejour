@@ -4,17 +4,13 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Sejour;
 use App\Entity\Patient;
-use App\Form\PatientType;
 use App\Form\SejourType;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use App\Form\SejourType2;
 
 class PrincipalController extends AbstractController
 {
@@ -36,12 +32,13 @@ class PrincipalController extends AbstractController
             'controller_name' => 'PrincipalController',
         ]);
     }
+
     #[Route('/logout', name:'app_logout')]
-public function logout(): void
-{
-// controller can be blank: it will never be called!
-throw new \Exception('Don\'t forget to activate logout in security.yaml');
-}
+    public function logout(): void
+    {
+        // controller can be blank: it will never be called!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
 
     #[Route('/creer', name: 'creersejour')]
     public function creersejour(Request $request, EntityManagerInterface $em): Response
@@ -65,6 +62,29 @@ throw new \Exception('Don\'t forget to activate logout in security.yaml');
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/creer/{id}', name: 'creersejourpatient')]
+public function createSejour(Request $request, Patient $patient, EntityManagerInterface $em)
+{
+    $sejour = new Sejour();
+    $sejour->setPatient($patient);
+    $sejour->setEtat(0); 
+    $form = $this->createForm(SejourType2::class, $sejour, [
+        'patient' => $patient, 
+    ]);
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->persist($sejour);
+        $em->flush();
+        return $this->redirectToRoute('sejour_liste');
+    }
+
+    return $this->render('admin/creersejourpatient.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
 
     #[Route('/gererpatient', name: 'gererpatient')]
     public function listepatient(EntityManagerInterface $em): Response
