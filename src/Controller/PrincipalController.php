@@ -98,7 +98,6 @@ public function createSejour(Request $request, Patient $patient, EntityManagerIn
     #[Route('/modifierpatient/{id}', name: 'modifierpatient')]
     public function modifierpatient(int $id, Request $request, EntityManagerInterface $em): Response
     {
-    
         $patient = $em->getRepository(Patient::class)->find($id);
 
         if (!$patient) {
