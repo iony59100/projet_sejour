@@ -37,7 +37,18 @@ security:
         - { path: ^/creer, roles: ROLE_ADMIN }
         - { path: ^/sejours, roles: ROLE_ADMIN }
         - { path: ^/modifier, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/gererpatient, roles: ROLE_ADMIN }
+        - { path: ^/creerpatient, roles: ROLE_ADMIN }
+        
+
+        - { path: ^/arrivee_patient, roles: ROLE_INF }
         - { path: ^/infirmier, roles: ROLE_INF }
+        - { path: ^/sejour_date, roles: ROLE_INF }
+        - { path: ^/sortiepatients, roles: ROLE_INF }
+        - { path: ^/prochainsejour, roles: ROLE_INF }
+
+
 
 when@test:
     security:
