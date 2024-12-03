@@ -78,7 +78,6 @@ throw new \Exception('Don\'t forget to activate logout in security.yaml');
     #[Route('/modifierpatient/{id}', name: 'modifierpatient')]
     public function modifierpatient(int $id, Request $request, EntityManagerInterface $em): Response
     {
-    
         $patient = $em->getRepository(Patient::class)->find($id);
 
         if (!$patient) {
