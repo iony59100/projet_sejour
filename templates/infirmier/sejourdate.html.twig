@@ -23,7 +23,7 @@
         </thead>
         <tbody>
             {% for sejour in sejours %}
-                {% if sejour.etat != 1 %}
+                {% if sejour.etat != 0 %}
                     <tr>
                         <td>{{ sejour.id }}</td>
                         <td>{{ sejour.dateArrivee|date('d/m/Y') }}</td>
