@@ -20,7 +20,11 @@
                     <tr>
                         <td>{{ sejours.patient.nom }} {{ sejours.patient.prenom }}</td>
                         <td>{{ sejours.dateArrivee|date('d/m/Y') }}</td>
-                        <td>{{ sejours.dateSortie|date('d/m/Y') }}</td>
+                        {% if sejours.dateSortie%}
+                            <td>{{ sejours.dateSortie|date('d/m/Y') }}</td>
+                        {% else %}
+                            <td>Pas de date de sortie de prévue</td>
+                        {% endif %}
                         <td>
                             {% if sejours.etat == 1 %}
                                 <span class="badge badge-success">Sortie validée</span>

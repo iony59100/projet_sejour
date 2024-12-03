@@ -229,48 +229,49 @@ public function modifiersejour(int $id, Request $request, EntityManagerInterface
     
     #[Route('/informationsejour/{id}', name: 'informationsejour')]
     public function informationsejour(int $id, Request $request, EntityManagerInterface $em): Response
-
     {
-    $sejour = $em->getRepository(Sejour::class)->find($id);
-
-    if (!$sejour) {
-        throw $this->createNotFoundException('Séjour non trouvé');
+        $sejour = $em->getRepository(Sejour::class)->find($id);
+    
+        if (!$sejour) {
+            throw $this->createNotFoundException('Séjour non trouvé');
+        }
+        $lit = $sejour->getLit();
+        $form = $this->createFormBuilder($sejour)
+            ->add('commentaire', TextType::class, [
+                'required' => false,
+                'label' => 'Commentaire',
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('etat', SubmitType::class, [
+                'label' => 'Valider l\'arrivée',
+                'attr' => ['class' => 'btn btn-success']
+            ])
+            ->getForm();
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sejour->setEtat(true);
+        
+            if ($lit) {
+                $lit->setEtat('occupé');
+                $em->persist($lit);
+            }
+            
+            $em->flush(); 
+    
+            $this->addFlash('success', 'L\'arrivée du patient a été validée.');
+    
+            return $this->redirectToRoute('arrivee_patient');
+        }
+    
+        return $this->render('infirmier/informationsejour.html.twig', [
+            'sejour' => $sejour,
+            'form' => $form->createView(),
+        ]);
     }
-
-    $form = $this->createFormBuilder($sejour)
-    ->add('commentaire', TextType::class, [
-        'required' => false,
-        'label' => 'Commentaire',
-        'attr' => [
-            'class' => 'form-control',
-           
-        ]
-    ])
-    ->add('etat', SubmitType::class, [
-        'label' => 'Valider l\'arrivée',
-        'attr' => ['class' => 'btn btn-success']
-    ])
-    ->getForm();
-
-
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-       
-        $sejour->setEtat(true);
-        $em->flush();
-
-        $this->addFlash('success', 'L\'arrivée du patient a été validée.');
-
-
-        return $this->redirectToRoute('arrivee_patient');
-    }
-
-    return $this->render('infirmier/informationsejour.html.twig', [
-        'sejour' => $sejour,
-        'form' => $form->createView(),
-    ]);
-}
 
 #[Route('/informationsejourdate/{id}', name: 'informationsejourdate')]
 public function informationsejourdate(int $id, Request $request, EntityManagerInterface $em): Response
@@ -295,7 +296,7 @@ public function informationsejourdate(int $id, Request $request, EntityManagerIn
 public function listeSejoursActuels(EntityManagerInterface $em): Response
 {
     $sejours = $em->getRepository(Sejour::class)->findBy(['etat' => 1]);
-
+    
 
         return $this->render('infirmier/sortie.html.twig', [
             'sejours' => $sejours,
@@ -310,6 +311,7 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
     if (!$sejour) {
         throw $this->createNotFoundException('Séjour non trouvé');
     }
+    $lit = $sejour->getLit();
 
     $form = $this->createFormBuilder($sejour)
     ->add('commentaire', TextType::class, [
@@ -326,15 +328,24 @@ public function sortiePatient(int $id, Request $request, EntityManagerInterface 
     ])
     ->getForm();
 
+        
 
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
        
         $sejour->setEtat(false);
+
+        if ($lit) {
+            $lit->setEtat('libre');
+            $em->persist($lit);
+        }
+        
+
         $em->flush();
 
         $this->addFlash('success', 'La sortie du patient a été validée.');
+
 
 
         return $this->redirectToRoute('liste_sejours_actuels');
