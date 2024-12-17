@@ -5,7 +5,12 @@
 {% block body %}
     <h1>Liste des Séjours</h1>
 
-    <table class="table">
+    <a href="{{ path('creersejour') }}" class="btn btn-primary">Créer un séjour</a>
+
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un séjour par nom de patient...">
+    </div>
+    <table id="patientTable" class="table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -15,7 +20,6 @@
                 <th>Commentaire </th>
                 <th>Lit</th>
                 <th>Action</th>
-                
             </tr>
         </thead>
         <tbody>
@@ -30,8 +34,8 @@
                             Pas encore sorti
                         {% endif %}
                     </td>
-                    <td>{{ sejour.patient.nom }}</td>
-                    <td>{{sejour.commentaire}}</td>
+                    <td class="patient-name">{{ sejour.patient.nom }}</td>
+                    <td>{{ sejour.commentaire }}</td>
                     <td>{{ sejour.lit.id }}</td>
                     <td>
                         <a href="{{ path('modifiersejour', {'id': sejour.id}) }}" class="btn btn-warning">Modifier</a>
@@ -39,9 +43,24 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6">Aucun séjour trouvé</td>
+                    <td colspan="7">Aucun séjour trouvé</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#patientTable tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.patient-name').textContent.toLowerCase();
+                if (name.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 {% endblock %}

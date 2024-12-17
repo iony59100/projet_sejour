@@ -5,7 +5,12 @@
 {% block body %}
     <h1>Liste des Séjours</h1>
     <a href="{{ path('creerpatient') }}" class="btn btn-success mb-3">Créer un Nouveau Patient</a>
-    <table class="table">
+
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un patient par nom...">
+    </div>
+
+    <table class="table" id="patientTable">
         <thead>
             <tr>
                 <th>ID</th>
@@ -21,7 +26,7 @@
             {% for patient in patients %}
                 <tr>
                     <td>{{ patient.id }}</td>
-                    <td>{{ patient.nom }}</td>
+                    <td class="patient-name">{{ patient.nom }}</td>
                     <td>{{ patient.prenom }}</td>
                     <td>{{ patient.adresse }}</td>
                     <td>{{ patient.tel }}</td>
@@ -39,4 +44,20 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#patientTable tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.patient-name').textContent.toLowerCase();
+                if (name.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 {% endblock %}
