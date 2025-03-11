@@ -6,8 +6,13 @@ use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
+#[ApiResource(
+    operations: [
+       new Get()
+    ])]
 class Service
 {
     #[ORM\Id]
