@@ -6,13 +6,10 @@ use App\Repository\SejourRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
+
 
 #[ORM\Entity(repositoryClass: SejourRepository::class)]
-#[ApiResource(
-    operations: [
-       new Get()
-    ])]
+#[ApiResource]
 class Sejour
 {
     #[ORM\Id]
