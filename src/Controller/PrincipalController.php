@@ -88,7 +88,7 @@ public function createSejour(Request $request, Patient $patient, EntityManagerIn
         'form' => $form->createView(),
     ]);
 }
-
+#test
     #[Route('/gererpatient', name: 'gererpatient')]
     public function listepatient(EntityManagerInterface $em): Response
     {
