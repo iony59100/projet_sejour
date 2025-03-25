@@ -10,10 +10,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
-#[ApiResource(
-    operations: [
-       new Get()
-    ])]
+#[ApiResource]
 class Patient
 {
     #[ORM\Id]

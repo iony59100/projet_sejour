@@ -49,7 +49,7 @@ security:
         - { path: ^/prochainsejour, roles: ROLE_INF }
         
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        #- { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
