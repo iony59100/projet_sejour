@@ -6,8 +6,14 @@ use App\Repository\ChambreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: ChambreRepository::class)]
+#[ApiResource(
+    operations: [
+       new Get()
+    ])]
 class Chambre
 {
     #[ORM\Id]

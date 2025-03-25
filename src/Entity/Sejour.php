@@ -5,8 +5,11 @@ namespace App\Entity;
 use App\Repository\SejourRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+
 
 #[ORM\Entity(repositoryClass: SejourRepository::class)]
+#[ApiResource]
 class Sejour
 {
     #[ORM\Id]
